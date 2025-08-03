@@ -5,7 +5,7 @@ const Calculator = () => {
   const [inputMode, setInputMode] = useState(false);
   const [activeInput, setActiveInput] = useState<'a' | 'b' | 'c'>('a');
   const [inputValues, setInputValues] = useState({ a: '', b: '', c: '' });
-  const [focusToggle, setFocusToggle] = useState<'b' | 'c'>('b');
+  const [result, setResult] = useState('');
 
   const handleNumberClick = (num: string) => {
     if (inputMode) {
@@ -74,34 +74,79 @@ const Calculator = () => {
   };
 
   const toggleFocus = () => {
-    if (focusToggle === 'b') {
-      setFocusToggle('c');
-      setActiveInput('b');
-    } else {
-      setFocusToggle('b');
-      setActiveInput('c');
-    }
+    const inputOrder: ('a' | 'b' | 'c')[] = ['a', 'b', 'c'];
+    const currentIndex = inputOrder.indexOf(activeInput);
+    const nextIndex = (currentIndex + 1) % inputOrder.length;
+    setActiveInput(inputOrder[nextIndex]);
+  };
+
+  const getNextInput = () => {
+    const inputOrder: ('a' | 'b' | 'c')[] = ['a', 'b', 'c'];
+    const currentIndex = inputOrder.indexOf(activeInput);
+    const nextIndex = (currentIndex + 1) % inputOrder.length;
+    return inputOrder[nextIndex];
   };
 
   const handleInputClick = (input: 'a' | 'b' | 'c') => {
     setActiveInput(input);
   };
 
-  const calculateResult = () => {
+  const solveQuadratic = () => {
     try {
-      // Convert mathematical symbols back to JavaScript operators for evaluation
-      let expression = display
-        .replace(/÷/g, '/')
-        .replace(/×/g, '*')
-        .replace(/−/g, '-')
-        .replace(/sin\(/g, 'Math.sin(')
-        .replace(/cos\(/g, 'Math.cos(')
-        .replace(/tan\(/g, 'Math.tan(');
-      
-      const result = eval(expression);
-      setDisplay(result.toString());
+      // Parse coefficients from input values
+      const a = parseFloat(inputValues.a) || 0;
+      const b = parseFloat(inputValues.b) || 0;
+      const c = parseFloat(inputValues.c) || 0;
+
+      if (a === 0) {
+        setResult('Not a quadratic equation (a = 0)');
+        return;
+      }
+
+      // Calculate discriminant
+      const discriminant = b * b - 4 * a * c;
+
+      if (discriminant > 0) {
+        // Two real solutions
+        const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+        const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+        setResult(`x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`);
+      } else if (discriminant === 0) {
+        // One real solution
+        const x = -b / (2 * a);
+        setResult(`x = ${x.toFixed(4)}`);
+      } else {
+        // Complex solutions
+        const realPart = (-b / (2 * a)).toFixed(4);
+        const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
+        setResult(`x₁ = ${realPart} + ${imaginaryPart}i, x₂ = ${realPart} - ${imaginaryPart}i`);
+      }
     } catch (error) {
-      setDisplay('Error');
+      setResult('Error solving equation');
+    }
+  };
+
+  const calculateResult = () => {
+    if (inputMode) {
+      // Solve quadratic equation when in input mode
+      solveQuadratic();
+    } else {
+      // Regular calculator evaluation
+      try {
+        // Convert mathematical symbols back to JavaScript operators for evaluation
+        let expression = display
+          .replace(/÷/g, '/')
+          .replace(/×/g, '*')
+          .replace(/−/g, '-')
+          .replace(/sin\(/g, 'Math.sin(')
+          .replace(/cos\(/g, 'Math.cos(')
+          .replace(/tan\(/g, 'Math.tan(');
+        
+        const result = eval(expression);
+        setDisplay(result.toString());
+      } catch (error) {
+        setDisplay('Error');
+      }
     }
   };
 
@@ -136,6 +181,14 @@ const Calculator = () => {
                 </div>
               ))}
             </div>
+            {result && (
+              <div className="bg-calculator-screen rounded-xl p-4">
+                <div className="text-calculator-screen-text text-sm mb-1 font-mono">Result:</div>
+                <div className="text-calculator-screen-text text-lg font-mono break-all">
+                  {result}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -250,7 +303,7 @@ const Calculator = () => {
               onClick={toggleFocus}
               className="bg-calculator-toggle hover:bg-calculator-toggle-hover text-calculator-toggle-text rounded-xl p-4 font-semibold transition-colors"
             >
-              {focusToggle}
+              {getNextInput()}
             </button>
           )}
           {!inputMode && (
