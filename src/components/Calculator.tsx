@@ -92,33 +92,64 @@ const Calculator = () => {
 
   const solveQuadratic = () => {
     try {
-      // Parse coefficients from input values
-      const a = parseFloat(inputValues.a) || 0;
-      const b = parseFloat(inputValues.b) || 0;
-      const c = parseFloat(inputValues.c) || 0;
+      // Parse coefficients from input values with better validation
+      const aStr = inputValues.a.trim();
+      const bStr = inputValues.b.trim();
+      const cStr = inputValues.c.trim();
 
-      if (a === 0) {
-        setDisplay('Not a quadratic equation (a = 0)');
+      if (!aStr || !bStr || !cStr) {
+        setDisplay('Please enter all coefficients (a, b, c)');
         return;
       }
 
-      // Calculate discriminant
+      const a = parseFloat(aStr);
+      const b = parseFloat(bStr);
+      const c = parseFloat(cStr);
+
+      if (isNaN(a) || isNaN(b) || isNaN(c)) {
+        setDisplay('Invalid input: Please enter valid numbers');
+        return;
+      }
+
+      if (a === 0) {
+        setDisplay('Not a quadratic equation (a cannot be 0)');
+        return;
+      }
+
+      // Calculate discriminant: b² - 4ac
       const discriminant = b * b - 4 * a * c;
 
       if (discriminant > 0) {
-        // Two real solutions
-        const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
-        const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-        setDisplay(`x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`);
+        // Two distinct real solutions
+        const sqrtDiscriminant = Math.sqrt(discriminant);
+        const x1 = (-b + sqrtDiscriminant) / (2 * a);
+        const x2 = (-b - sqrtDiscriminant) / (2 * a);
+        
+        // Format results to remove unnecessary decimal places
+        const formatNumber = (num: number) => {
+          return Number.isInteger(num) ? num.toString() : num.toFixed(4).replace(/\.?0+$/, '');
+        };
+        
+        setDisplay(`x₁ = ${formatNumber(x1)}, x₂ = ${formatNumber(x2)}`);
       } else if (discriminant === 0) {
-        // One real solution
+        // One repeated real solution
         const x = -b / (2 * a);
-        setDisplay(`x = ${x.toFixed(4)}`);
+        const formatNumber = (num: number) => {
+          return Number.isInteger(num) ? num.toString() : num.toFixed(4).replace(/\.?0+$/, '');
+        };
+        setDisplay(`x = ${formatNumber(x)} (repeated root)`);
       } else {
-        // Complex solutions
-        const realPart = (-b / (2 * a)).toFixed(4);
-        const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
-        setDisplay(`x₁ = ${realPart} + ${imaginaryPart}i, x₂ = ${realPart} - ${imaginaryPart}i`);
+        // Complex conjugate solutions
+        const realPart = -b / (2 * a);
+        const imaginaryPart = Math.sqrt(-discriminant) / (2 * a);
+        
+        const formatNumber = (num: number) => {
+          return Number.isInteger(num) ? num.toString() : num.toFixed(4).replace(/\.?0+$/, '');
+        };
+        
+        const real = formatNumber(realPart);
+        const imag = formatNumber(imaginaryPart);
+        setDisplay(`x₁ = ${real} + ${imag}i, x₂ = ${real} - ${imag}i`);
       }
     } catch (error) {
       setDisplay('Error solving equation');
