@@ -52,6 +52,25 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				calculator: {
+					screen: 'hsl(var(--calculator-screen))',
+					'screen-text': 'hsl(var(--calculator-screen-text))',
+					button: 'hsl(var(--calculator-button))',
+					'button-hover': 'hsl(var(--calculator-button-hover))',
+					'button-text': 'hsl(var(--calculator-button-text))',
+					operator: 'hsl(var(--calculator-operator))',
+					'operator-hover': 'hsl(var(--calculator-operator-hover))',
+					'operator-text': 'hsl(var(--calculator-operator-text))',
+					function: 'hsl(var(--calculator-function))',
+					'function-hover': 'hsl(var(--calculator-function-hover))',
+					'function-text': 'hsl(var(--calculator-function-text))',
+					toggle: 'hsl(var(--calculator-toggle))',
+					'toggle-hover': 'hsl(var(--calculator-toggle-hover))',
+					'toggle-text': 'hsl(var(--calculator-toggle-text))',
+					clear: 'hsl(var(--calculator-clear))',
+					'clear-hover': 'hsl(var(--calculator-clear-hover))',
+					'clear-text': 'hsl(var(--calculator-clear-text))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

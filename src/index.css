@@ -2,41 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Calculator Design System - All colors MUST be HSL */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 15% 95%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Calculator specific colors */
+    --calculator-screen: 0 0% 8%;
+    --calculator-screen-text: 0 0% 98%;
+    
+    --calculator-button: 0 0% 98%;
+    --calculator-button-hover: 0 0% 90%;
+    --calculator-button-text: 0 0% 15%;
+    
+    --calculator-operator: 255 90% 60%;
+    --calculator-operator-hover: 255 90% 50%;
+    --calculator-operator-text: 0 0% 98%;
+    
+    --calculator-function: 30 95% 55%;
+    --calculator-function-hover: 30 95% 45%;
+    --calculator-function-text: 0 0% 98%;
+    
+    --calculator-toggle: 120 60% 50%;
+    --calculator-toggle-hover: 120 60% 40%;
+    --calculator-toggle-text: 0 0% 98%;
+    
+    --calculator-clear: 0 75% 55%;
+    --calculator-clear-hover: 0 75% 45%;
+    --calculator-clear-text: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 0 0% 15%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 90%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 0 0% 90%;
+    --accent-foreground: 0 0% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 0 0% 85%;
+    --input: 0 0% 95%;
+    --ring: 0 0% 60%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
