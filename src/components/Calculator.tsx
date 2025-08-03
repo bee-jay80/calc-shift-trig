@@ -5,7 +5,6 @@ const Calculator = () => {
   const [inputMode, setInputMode] = useState(false);
   const [activeInput, setActiveInput] = useState<'a' | 'b' | 'c'>('a');
   const [inputValues, setInputValues] = useState({ a: '', b: '', c: '' });
-  const [result, setResult] = useState('');
 
   const handleNumberClick = (num: string) => {
     if (inputMode) {
@@ -99,7 +98,7 @@ const Calculator = () => {
       const c = parseFloat(inputValues.c) || 0;
 
       if (a === 0) {
-        setResult('Not a quadratic equation (a = 0)');
+        setDisplay('Not a quadratic equation (a = 0)');
         return;
       }
 
@@ -110,19 +109,19 @@ const Calculator = () => {
         // Two real solutions
         const x1 = (-b + Math.sqrt(discriminant)) / (2 * a);
         const x2 = (-b - Math.sqrt(discriminant)) / (2 * a);
-        setResult(`x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`);
+        setDisplay(`x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`);
       } else if (discriminant === 0) {
         // One real solution
         const x = -b / (2 * a);
-        setResult(`x = ${x.toFixed(4)}`);
+        setDisplay(`x = ${x.toFixed(4)}`);
       } else {
         // Complex solutions
         const realPart = (-b / (2 * a)).toFixed(4);
         const imaginaryPart = (Math.sqrt(-discriminant) / (2 * a)).toFixed(4);
-        setResult(`x₁ = ${realPart} + ${imaginaryPart}i, x₂ = ${realPart} - ${imaginaryPart}i`);
+        setDisplay(`x₁ = ${realPart} + ${imaginaryPart}i, x₂ = ${realPart} - ${imaginaryPart}i`);
       }
     } catch (error) {
-      setResult('Error solving equation');
+      setDisplay('Error solving equation');
     }
   };
 
@@ -161,8 +160,16 @@ const Calculator = () => {
             </div>
           </div>
         ) : (
-          // Three Input Fields
+          // Three Input Fields and Main Display
           <div className="mb-6 space-y-4">
+            {/* Main Display Screen */}
+            <div className="bg-calculator-screen rounded-xl p-6 min-h-20 flex items-center justify-end">
+              <div className="text-calculator-screen-text text-3xl font-mono break-all text-right">
+                {display}
+              </div>
+            </div>
+            
+            {/* Three Input Fields */}
             <div className="grid grid-cols-3 gap-4">
               {(['a', 'b', 'c'] as const).map((inputKey) => (
                 <div
@@ -181,14 +188,6 @@ const Calculator = () => {
                 </div>
               ))}
             </div>
-            {result && (
-              <div className="bg-calculator-screen rounded-xl p-4">
-                <div className="text-calculator-screen-text text-sm mb-1 font-mono">Result:</div>
-                <div className="text-calculator-screen-text text-lg font-mono break-all">
-                  {result}
-                </div>
-              </div>
-            )}
           </div>
         )}
 
